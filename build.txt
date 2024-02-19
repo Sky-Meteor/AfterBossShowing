@@ -1,0 +1,5 @@
+displayName = 展示物品栏和模组列表 Show Inventory and Modlist
+author = Furgo_
+version = 1.0.2
+includeSource = true
+side = Client

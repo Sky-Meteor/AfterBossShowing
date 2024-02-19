@@ -1,0 +1,53 @@
+Mods: {
+	AfterBossShowing: {
+		Configs: {
+			ABSConfig: {
+				DisplayName: Config
+				SmallerFasterTooltip: Smaller value means faster speed
+				ShowInvHeader: Show Inventory
+
+				ShowInvSpeed: {
+					Label: Mouse Speed
+					Tooltip: "{$Mods.AfterBossShowing.ABSConfig.SmallerFasterTooltip}"
+				}
+
+				ShowInvDuration: {
+					Label: Hovering Duration For Each Item
+					Tooltip: ""
+				}
+
+				AutoCloseInv: {
+					Label: Close Inventory After Showing
+					Tooltip: ""
+				}
+
+				ShowVanityDye: {
+					Label: Show Vanities And Dyes
+					Tooltip: ""
+				}
+
+				ShowModsHeader: Show Modlist
+
+				ShowModsTypingSpeed: {
+					Label: Typing Speed
+					Tooltip: "{$Mods.AfterBossShowing.ABSConfig.SmallerFasterTooltip}"
+				}
+
+				ShowModsScrollingSpeed: {
+					Label: Scrolling Speed
+					Tooltip: "{$Mods.AfterBossShowing.ABSConfig.SmallerFasterTooltip}"
+				}
+
+				ShowModsDuration: {
+					Label: Duration After Finished
+					Tooltip: ""
+				}
+			}
+		}
+
+		Keybinds: {
+			ShowModsKey.DisplayName: Show Modlist
+			ShowInvKey.DisplayName: Show Inventory
+		}
+	}
+}

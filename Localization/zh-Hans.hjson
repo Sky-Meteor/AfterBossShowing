@@ -1,0 +1,53 @@
+Mods: {
+	AfterBossShowing: {
+		Configs: {
+			ABSConfig: {
+				DisplayName: 配置
+				SmallerFasterTooltip: 数值越小，速度越快
+				ShowInvHeader: 展示物品栏配置
+
+				ShowInvSpeed: {
+					Label: 鼠标移动速度
+					Tooltip: "{$Mods.AfterBossShowing.Configs.ABSConfig.SmallerFasterTooltip}"
+				}
+
+				ShowInvDuration: {
+					Label: 每个物品的悬停时间
+					Tooltip: ""
+				}
+
+				AutoCloseInv: {
+					Label: 展示完毕后关闭物品栏
+					Tooltip: ""
+				}
+
+				ShowVanityDye: {
+					Label: 展示时装和染料
+					Tooltip: ""
+				}
+
+				ShowModsHeader: 展示模组列表配置
+
+				ShowModsTypingSpeed: {
+					Label: 打字速度
+					Tooltip: "{$Mods.AfterBossShowing.Configs.ABSConfig.SmallerFasterTooltip}"
+				}
+
+				ShowModsScrollingSpeed: {
+					Label: 上滚速度
+					Tooltip: "{$Mods.AfterBossShowing.Configs.ABSConfig.SmallerFasterTooltip}"
+				}
+
+				ShowModsDuration: {
+					Label: 结束后停留时间
+					Tooltip: ""
+				}
+			}
+		}
+
+		Keybinds: {
+			ShowModsKey.DisplayName: 展示模组列表
+			ShowInvKey.DisplayName: 展示物品栏
+		}
+	}
+}

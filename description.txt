@@ -1,0 +1,13 @@
+展示物品栏和模组列表：
+按下“展示物品栏”键后，自动展示物品栏和装备栏（跳过钱币栏，支持模组饰品栏，但不支持多列饰品栏）
+展示物品栏的过程中按切换装备的快捷键可以展示其他装备栏
+可以在模组配置中调整是否跳过时装和染料
+按下“展示模组列表”键后，自动展示模组列表
+多项数值可在模组配置调整
+
+Show Inventory and Modlist:
+Press "Show Inventory" key to show inventory and equipments automatically (skip coins, support modded accessory slots, do not support accessory slots in column 2 or more)
+Press your loadout hotkey during Show Inv to show your other loadouts
+Can skip vanities and dyes in config
+Press "Show Modlist" key to show modlist automatically
+Several values are adjustable in mod configuration
