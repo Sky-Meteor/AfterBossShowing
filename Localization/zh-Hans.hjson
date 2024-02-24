@@ -38,9 +38,16 @@ Mods: {
 					Tooltip: "{$Mods.AfterBossShowing.Configs.ABSConfig.SmallerFasterTooltip}"
 				}
 
-				ShowModsDuration: {
+				ShowModsEndDuration: {
 					Label: 结束后停留时间
 					Tooltip: ""
+				}
+
+				MiscHeader: 其他
+
+				BoundTwoKeys: {
+					Label: 绑定展示物品栏按键和展示模组列表按键
+					Tooltip: 按两者中的任何一个都会同时展示两者
 				}
 			}
 		}

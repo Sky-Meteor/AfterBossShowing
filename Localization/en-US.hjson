@@ -38,9 +38,16 @@ Mods: {
 					Tooltip: "{$Mods.AfterBossShowing.ABSConfig.SmallerFasterTooltip}"
 				}
 
-				ShowModsDuration: {
+				ShowModsEndDuration: {
 					Label: Duration After Finished
 					Tooltip: ""
+				}
+
+				MiscHeader: Misc
+
+				BoundTwoKeys: {
+					Label: Bound Show Inventory key and Show Modlist key
+					Tooltip: Press any of the two keys will trigger both
 				}
 			}
 		}

@@ -1,1 +1,3 @@
-fix a bug with showing loadouts
+add "bound two keys" config
+fix compatibility with High FPS Support's mouse tweak
+you can't left/right click or move you cursor when showing inventory now

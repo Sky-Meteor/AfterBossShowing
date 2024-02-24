@@ -16,11 +16,11 @@ namespace AfterBossShowing
 
         [Header("$Mods.AfterBossShowing.Configs.ABSConfig.ShowInvHeader")]
         [Range(1, 114514)]
-        [DefaultValue(5)]
+        [DefaultValue(10)]
         public int ShowInvSpeed;
 
         [Range(0, 114514)]
-        [DefaultValue(20)]
+        [DefaultValue(40)]
         public int ShowInvDuration;
 
         [DefaultValue(true)]
@@ -40,6 +40,9 @@ namespace AfterBossShowing
 
         [Range(0, 114514)]
         [DefaultValue(20)]
-        public int ShowModsDuration;
+        public int ShowModsEndDuration;
+
+        [Header("$Mods.AfterBossShowing.Configs.ABSConfig.MiscHeader")]
+        public bool BoundTwoKeys;
     }
 }

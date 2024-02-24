@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Reflection;
+using Microsoft.Xna.Framework.Input;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -39,11 +40,9 @@ namespace AfterBossShowing
         public bool ScrollingModlist;
 
         public const string ModlistFullText = "/modlist";
-
+        
         public override void PostUpdate()
         {
-            if (ShowingInv)
-                ShowInventory();
             if (ShowingMods)
                 CalculateShowModlist();
         }
@@ -52,8 +51,51 @@ namespace AfterBossShowing
         {
             if (Player.whoAmI != Main.myPlayer)
                 return;
+            if (ABSConfig.Instance.BoundTwoKeys && (AfterBossShowing.ShowInvKey.JustPressed || AfterBossShowing.ShowModsKey.JustPressed))
+            {
+                if (!ShowingMods && !ShowingInv)
+                {
+                    ToggleInv();
+                    ToggleModlist();
+                }
+                else if (ShowingInv)
+                {
+                    ToggleInv();
+                }
+            }
+            else
+            {
+                if (AfterBossShowing.ShowInvKey.JustPressed)
+                {
+                    ToggleInv();
+                }
+                if (AfterBossShowing.ShowModsKey.JustPressed)
+                {
+                    ToggleModlist();
+                }
+            }
+        }
 
-            if (AfterBossShowing.ShowInvKey.JustPressed)
+        private void ToggleModlist()
+        {
+            ModlistText = "";
+            ModlistTextTimer = 0;
+            ShowingModsEndTimer = 0;
+            ScrollingModlist = false;
+            ModsToScroll = ModLoader.Mods.Length - 10 > 0 ? ModLoader.Mods.Length - 10 : 0;
+            ShowingMods = !ShowingMods;
+            if (!ShowingMods)
+                Main.ClosePlayerChat();
+            else if (!Main.drawingPlayerChat)
+            {
+                Main.OpenPlayerChat();
+            }
+        }
+
+        private void ToggleInv()
+        {
+            ShowingInv = !ShowingInv;
+            if (ShowingInv)
             {
                 if (Main.myPlayer == Player.whoAmI && !Main.playerInventory)
                     Player.ToggleInv();
@@ -65,36 +107,18 @@ namespace AfterBossShowing
                 ShowInvSlot = (SlotType.Start, 0);
                 OldSlotType = SlotType.Start;
                 ShowInvTimer = 0;
-                if (ShowingInv)
-                    SetMousePosition(ShowInvMouseStart);
-                else
-                {
-                    LoadoutNeeded = new bool?[] { false, false, false };
-                    LoadoutNeeded[Player.CurrentLoadoutIndex] = true;
-                    ForceSwitchingLoadout = false;
-                    DefaultLoadout = Player.CurrentLoadoutIndex;
-                    VanillaEquipmentsCount = 5 + Player.GetAmountOfExtraAccessorySlotsToShow() + 3;
-                    AccessorySlotLoader = LoaderManager.Get<AccessorySlotLoader>();
-                    CalculateModdedSlots();
-                    InventoryBackSize = TextureAssets.InventoryBack.Value.Frame().Size();
-                }
-                ShowingInv = !ShowingInv;
+
+                LoadoutNeeded = new bool?[] { false, false, false };
+                LoadoutNeeded[Player.CurrentLoadoutIndex] = true;
+                ForceSwitchingLoadout = false;
+                DefaultLoadout = Player.CurrentLoadoutIndex;
+                VanillaEquipmentsCount = 5 + Player.GetAmountOfExtraAccessorySlotsToShow() + 3;
+                AccessorySlotLoader = LoaderManager.Get<AccessorySlotLoader>();
+                CalculateModdedSlots();
+                InventoryBackSize = TextureAssets.InventoryBack.Value.Frame().Size();
+
                 ShowInvMouseStart = new Vector2(PlayerInput.MouseX, PlayerInput.MouseY);
                 OldSlotPosition = ShowInvMouseStart;
-            }
-
-            if (AfterBossShowing.ShowModsKey.JustPressed)
-            {
-                if (!Main.drawingPlayerChat)
-                    Main.OpenPlayerChat();
-                ModlistText = "";
-                ModlistTextTimer = 0;
-                ShowingModsEndTimer = 0;
-                ScrollingModlist = false;
-                ModsToScroll = ModLoader.Mods.Length - 10 > 0 ? ModLoader.Mods.Length - 10 : 0;
-                if (ShowingMods)
-                    Main.ClosePlayerChat();
-                ShowingMods = !ShowingMods;
             }
         }
 
@@ -155,13 +179,7 @@ namespace AfterBossShowing
             }
             return new Vector2(x * uiScale, y * uiScale) + InventoryBackSize * 0.6f * uiScale;
         }
-
-        public static void SetMousePosition(Vector2 position)
-        {
-            PlayerInput.MouseX = (int)position.X;
-            PlayerInput.MouseY = (int)position.Y;
-        }
-
+        
         public void CalculateModdedSlots()
         {
             int extraSlots = Player.GetModPlayer<ModAccessorySlotPlayer>().SlotCount;
@@ -238,16 +256,13 @@ namespace AfterBossShowing
                 ShowInvSlot = (SlotType.End, 0);
         }
 
-        public void ShowInventory()
+        public Vector2 ShowInventory()
         {
             if (Main.myPlayer == Player.whoAmI && !Main.playerInventory) // stop if player closes inv
             {
                 ShowingInv = false;
-                SetMousePosition(ShowInvMouseStart);
-                return;
+                return Vector2.Zero; // won't move
             }
-
-            // DetermineSlot();
 
             Vector2 position = OldSlotPosition;
             Vector2 destination = PlayerSlotPosition(ShowInvSlot);
@@ -263,13 +278,12 @@ namespace AfterBossShowing
                 if (ShowInvSlot.Item1 == SlotType.End)
                 {
                     ShowingInv = false;
-                    SetMousePosition(ShowInvMouseStart);
                     Player.TrySwitchingLoadout(DefaultLoadout);
                     Main.EquipPageSelected = 0;
                     SoundEngine.PlaySound(SoundID.MenuOpen, Player.Center);
                     if (ABSConfig.Instance.AutoCloseInv)
                         Player.ToggleInv();
-                    return;
+                    return ShowInvMouseStart;
                 }
 
                 OldSlotType = ShowInvSlot.Item1;
@@ -281,7 +295,8 @@ namespace AfterBossShowing
             {
                 position = destination;
             }
-            SetMousePosition(position);
+
+            return position;
         }
         
         public void CalculateShowModlist()
@@ -299,7 +314,7 @@ namespace AfterBossShowing
                         Main.chatMonitor.Offset(1);
                     }
                 }
-                else if (++ShowingModsEndTimer > ABSConfig.Instance.ShowModsDuration)
+                else if (++ShowingModsEndTimer > ABSConfig.Instance.ShowModsEndDuration)
                 {
                     Main.ClosePlayerChat();
                     ModlistTextTimer = 0;
@@ -338,19 +353,19 @@ namespace AfterBossShowing
 
         public override void OnEnterWorld()
         {
+            UpdateMainMouseHook.InWorld = true;
             Reset();
         }
         public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
         {
             Reset();
         }
-
+        
         public void Reset()
         {
             ShowingInv = false;
             ShowInvSlot = (SlotType.Start, 0);
             OldSlotType = SlotType.Start;
-            OldSlotPosition = Vector2.Zero;
             ShowInvTimer = 0;
             ModdedSlotVisible = null;
             LoadoutNeeded = null;
